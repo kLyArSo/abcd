@@ -1,0 +1,52 @@
+services:
+    nginx:
+        build: /Users/ylhouari/Desktop/INCEPTION/srcs/requirements/nginx/
+        image: nginx
+        container_name: nginx
+        ports:
+            - "443:443"
+        networks:
+            - DGN
+         depends_on: 
+            - wordpress
+        restart: always
+
+    wordpress:
+        env_file: /Users/ylhouari/Desktop/INCEPTION/srcs/.env
+        build: /Users/ylhouari/Desktop/INCEPTION/srcs/requirements/wordpress/
+        image: wordpress
+        container_name: wordpress
+        ports:
+            - "9000:9000"
+            - "3306:3306"
+        networks:
+            - DGN
+        depends_on:
+            - mariadb
+            - nginx
+        restart: always
+
+    mariadb:
+        env_file: /Users/ylhouari/Desktop/INCEPTION/srcs/.env
+        build: /Users/ylhouari/Desktop/INCEPTION/srcs/requirements/mariadb/
+        image: mariadb
+        container_name: mariadb
+        ports:
+            - "3306:3306"
+        volumes:
+          - type: volume
+            source: /home/ylhouari/data
+            target: /to/be/determined
+        networks:
+            - DGN
+        restart: aslways
+
+    network:
+        - DGN
+    volumes:
+        wordpress_files:
+
+
+
+
+
